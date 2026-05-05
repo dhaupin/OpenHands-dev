@@ -13,4 +13,4 @@ watch_dir = "frontend/src"
 NODE_VERSION = "20"
 
 [[pages_build_artifact]]
-directory = "frontend/build/client"
+directory = "frontend/build"
