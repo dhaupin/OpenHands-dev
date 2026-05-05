@@ -112,7 +112,7 @@ function ConversationsScreen() {
         {/* Search Input */}
         <div className="relative">
           <SearchIcon
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A1A1A1]"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-tertiary-alt"
             width={16}
             height={16}
           />
@@ -121,7 +121,7 @@ function ConversationsScreen() {
             placeholder={t(I18nKey.COMMON$SEARCH)}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 pr-3 py-2 w-48 bg-[#282A2E] text-white text-sm rounded-lg border border-[#3D4148] focus:border-[#10A32F] focus:outline-none placeholder:text-[#6B7288]"
+            className="pl-9 pr-3 py-2 w-48 bg-tertiary text-white text-sm rounded-lg border border-[#3D4148] focus:border-[#10A32F] focus:outline-none placeholder:text-tertiary-alt"
           />
         </div>
 
@@ -129,7 +129,7 @@ function ConversationsScreen() {
         <select
           value={sortBy}
           onChange={handleSortChange}
-          className="px-3 py-2 bg-[#282A2E] text-white text-sm rounded-lg border border-[#3D4148] focus:border-[#10A32F] focus:outline-none cursor-pointer"
+          className="px-3 py-2 bg-tertiary text-white text-sm rounded-lg border border-[#3D4148] focus:border-[#10A32F] focus:outline-none cursor-pointer"
         >
           <option value="recent">{t(I18nKey.SORT$RECENT)}</option>
           <option value="oldest">{t(I18nKey.SORT$OLDEST)}</option>
@@ -141,7 +141,7 @@ function ConversationsScreen() {
           type="button"
           onClick={() => refetch()}
           disabled={isFetching}
-          className="p-2 bg-[#282A2E] text-white rounded-lg border border-[#3D4148] hover:bg-[#32363B] focus:outline-none disabled:opacity-50 transition-colors"
+          className="p-2 bg-tertiary text-white rounded-lg border border-[#3D4148] hover:bg-tertiary-alt focus:outline-none disabled:opacity-50 transition-colors"
           title={t(I18nKey.BUTTON$REFRESH)}
         >
           <RefreshIcon
