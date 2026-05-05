@@ -57,11 +57,19 @@ function ConversationsScreen() {
   };
 
   return (
-    <div className="px-0 pt-4 bg-transparent h-full flex flex-col pt-[35px] overflow-y-auto rounded-xl lg:px-[42px] lg:pt-[42px] custom-scrollbar-always">
-      <div className="flex items-center justify-between gap-2 mb-6 px-4 lg:px-0">
-        <h1 className="text-xl leading-7 text-white font-bold">
+    <div
+      data-testid="conversations-screen"
+      className="px-0 pt-4 bg-transparent h-full flex flex-col pt-[35px] overflow-y-auto rounded-xl lg:px-[42px] lg:pt-[42px] custom-scrollbar-always"
+    >
+      {/* Header */}
+      <header className="flex items-center justify-center gap-12 pb-8">
+        <h1 className="text-2xl leading-7 text-white font-semibold">
           {t(I18nKey.COMMON$CONVERSATIONS)}
         </h1>
+      </header>
+
+      {/* New Conversation Button */}
+      <div className="flex justify-center pb-8">
         <button
           type="button"
           onClick={handleStartNewConversation}
@@ -94,8 +102,8 @@ function ConversationsScreen() {
       {!isInitialLoading &&
         displayedConversations &&
         displayedConversations.length > 0 && (
-          <div className="flex flex-col">
-            <div className="transition-all duration-300 ease-in-out overflow-y-auto custom-scrollbar">
+          <div className="flex justify-center">
+            <div className="flex flex-col transition-all duration-300 ease-in-out overflow-y-auto custom-scrollbar w-full max-w-[703px]">
               <div ref={scrollContainerRef} className="flex flex-col">
                 {displayedConversations.map((conversation) => (
                   <RecentConversation
@@ -109,7 +117,7 @@ function ConversationsScreen() {
         )}
 
       {!isInitialLoading && (hasMoreConversations || isExpanded) && (
-        <div className="flex justify-start mt-6 mb-8 ml-4">
+        <div className="flex justify-center mt-6 mb-8">
           <button
             type="button"
             onClick={handleToggleExpansion}
