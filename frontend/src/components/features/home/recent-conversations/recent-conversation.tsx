@@ -10,6 +10,7 @@ import { SandboxStatusIndicator } from "./sandbox-status-indicator";
 import RepoForkedIcon from "#/icons/repo-forked.svg?react";
 import CircuitIcon from "#/icons/u-circuit.svg?react";
 import { ConversationActionMenu } from "./conversation-action-menu";
+import { Globe } from "lucide-react";
 
 interface RecentConversationProps {
   conversation: V1AppConversation;
@@ -36,9 +37,17 @@ export function RecentConversation({ conversation }: RecentConversationProps) {
               viewBox="0 0 24 24"
               fill="currentColor"
               className="text-yellow-400"
+              aria-label={t(I18nKey.BUTTON$PIN)}
             >
               <path d="M12 2v6m0 0l3-3m-3 3L9 5M12 22v-6m0 0l3 3m-3-3L9 19" />
             </svg>
+          )}
+          {conversation.public && (
+            <Globe
+              size={12}
+              className="text-blue-400"
+              aria-label={t(I18nKey.CONVERSATION$SHARED)}
+            />
           )}
           <span className="text-xs text-white leading-6 font-normal">
             {conversation.title}

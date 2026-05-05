@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
 import { usePaginatedConversations } from "#/hooks/query/use-paginated-conversations";
@@ -7,9 +7,10 @@ import { RecentConversation } from "../components/features/home/recent-conversat
 import { RecentConversationsSkeleton } from "../components/features/home/recent-conversations/recent-conversations-skeleton";
 import { useNavigate } from "react-router";
 import { BrandButton } from "#/components/features/settings/brand-button";
-import { RefreshCw, Search } from "lucide-react";
+import { RefreshCw, Search, Users } from "lucide-react";
 
 type SortOption = "recent" | "oldest" | "a-z" | "pinned";
+type FilterOption = "all" | "shared" | "personal";
 
 function ConversationsScreen() {
   const { t } = useTranslation();
@@ -17,6 +18,27 @@ function ConversationsScreen() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("recent");
+  const [filterBy, setFilterBy] = useState<FilterOption>("all");
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd/Ctrl + F for search focus
+      if ((e.metaKey || e.ctrlKey) && e.key === "f") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+      // Escape to clear search
+      if (e.key === "Escape" && document.activeElement === searchInputRef.current) {
+        setSearchQuery("");
+        searchInputRef.current?.blur();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const {
     data: conversationsList,
@@ -38,16 +60,29 @@ function ConversationsScreen() {
 
   const conversations = conversationsList?.pages.flatMap((page) => page.items) ?? [];
 
-  // Filter by search query
+  // Filter by search query AND shared filter
   const filteredConversations = useMemo(() => {
-    if (!searchQuery.trim()) return conversations;
-    const query = searchQuery.toLowerCase();
-    return conversations.filter(
-      (conv) =>
-        conv.title?.toLowerCase().includes(query) ||
-        conv.selected_repository?.toLowerCase().includes(query),
-    );
-  }, [conversations, searchQuery]);
+    let result = conversations;
+
+    // Filter by shared/personal
+    if (filterBy === "shared") {
+      result = result.filter((conv) => conv.public === true);
+    } else if (filterBy === "personal") {
+      result = result.filter((conv) => !conv.public);
+    }
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(
+        (conv) =>
+          conv.title?.toLowerCase().includes(query) ||
+          conv.selected_repository?.toLowerCase().includes(query),
+      );
+    }
+
+    return result;
+  }, [conversations, searchQuery, filterBy]);
 
   // Sort conversations
   const sortedConversations = useMemo(() => {
@@ -88,6 +123,10 @@ function ConversationsScreen() {
     setSortBy(e.target.value as SortOption);
   };
 
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilterBy(e.target.value as FilterOption);
+  };
+
   return (
     <div
       data-testid="conversations-screen"
@@ -107,27 +146,43 @@ function ConversationsScreen() {
         )}
       </header>
 
-      {/* Controls Row: Search + Sort + Refresh */}
+      {/* Controls Row: Search + Filter + Sort + Refresh */}
       <div className="flex justify-center pb-6 gap-3 flex-wrap">
         {/* Search Input */}
         <div className="relative">
           <Search
             className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-tertiary-alt"
             size={16}
+            aria-hidden="true"
           />
           <input
+            ref={searchInputRef}
             type="text"
             placeholder={t(I18nKey.COMMON$SEARCH)}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label={t(I18nKey.COMMON$SEARCH)}
             className="pl-9 pr-3 py-2 w-48 bg-tertiary text-white text-sm rounded-lg border border-[#3D4148] focus:border-[#10A32F] focus:outline-none placeholder:text-tertiary-alt"
           />
         </div>
+
+        {/* Filter Dropdown */}
+        <select
+          value={filterBy}
+          onChange={handleFilterChange}
+          aria-label={t(I18nKey.FILTER$SHARED)}
+          className="px-3 py-2 bg-tertiary text-white text-sm rounded-lg border border-[#3D4148] focus:border-[#10A32F] focus:outline-none cursor-pointer"
+        >
+          <option value="all">{t(I18nKey.FILTER$ALL)}</option>
+          <option value="shared">{t(I18nKey.FILTER$SHARED)}</option>
+          <option value="personal">{t(I18nKey.FILTER$PERSONAL)}</option>
+        </select>
 
         {/* Sort Dropdown */}
         <select
           value={sortBy}
           onChange={handleSortChange}
+          aria-label={t(I18nKey.SORT$LABEL)}
           className="px-3 py-2 bg-tertiary text-white text-sm rounded-lg border border-[#3D4148] focus:border-[#10A32F] focus:outline-none cursor-pointer"
         >
           <option value="recent">{t(I18nKey.SORT$RECENT)}</option>
@@ -141,7 +196,7 @@ function ConversationsScreen() {
           onClick={() => refetch()}
           disabled={isFetching}
           className="p-2 bg-tertiary text-white rounded-lg border border-[#3D4148] hover:bg-tertiary-alt focus:outline-none disabled:opacity-50 transition-colors"
-          title={t(I18nKey.BUTTON$REFRESH)}
+          aria-label={t(I18nKey.BUTTON$REFRESH)}
         >
           <RefreshCw
             className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`}
