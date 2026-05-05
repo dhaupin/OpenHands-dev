@@ -33,9 +33,16 @@ function ConversationsScreen() {
 
   const conversations = conversationsList?.pages.flatMap((page) => page.items) ?? [];
 
+  // Sort: pinned conversations first, then by updated_at descending
+  const sortedConversations = [...conversations].sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+  });
+
   // Get the conversations to display based on expansion state
   const displayLimit = isExpanded ? 20 : 10;
-  const displayedConversations = conversations.slice(0, displayLimit);
+  const displayedConversations = sortedConversations.slice(0, displayLimit);
 
   const hasConversations = conversations && conversations.length > 0;
   const hasMoreConversations = conversations && conversations.length > displayLimit;

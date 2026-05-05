@@ -119,6 +119,7 @@ export interface V1AppConversation {
   conversation_url: string | null;
   session_api_key: string | null;
   public?: boolean;
+  pinned?: boolean;
   sub_conversation_ids: string[];
 }
 

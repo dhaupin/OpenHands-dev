@@ -562,6 +562,17 @@ class V1ConversationService {
     );
     return data;
   }
+
+  static async updateConversationPinned(
+    conversationId: string,
+    pinned: boolean,
+  ): Promise<V1AppConversation> {
+    const { data } = await openHands.patch<V1AppConversation>(
+      `/api/v1/app-conversations/${conversationId}`,
+      { pinned },
+    );
+    return data;
+  }
 }
 
 export default V1ConversationService;

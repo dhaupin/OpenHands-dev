@@ -9,6 +9,7 @@ import { I18nKey } from "#/i18n/declaration";
 import { SandboxStatusIndicator } from "./sandbox-status-indicator";
 import RepoForkedIcon from "#/icons/repo-forked.svg?react";
 import CircuitIcon from "#/icons/u-circuit.svg?react";
+import { ConversationActionMenu } from "./conversation-action-menu";
 
 interface RecentConversationProps {
   conversation: V1AppConversation;
@@ -23,13 +24,27 @@ export function RecentConversation({ conversation }: RecentConversationProps) {
   return (
     <Link
       to={`/conversations/${conversation.id}`}
-      className="flex flex-col gap-1 p-[14px] cursor-pointer w-full rounded-lg hover:bg-[#5C5D62] transition-all duration-300 text-left"
+      className="group flex flex-col gap-1 p-[14px] cursor-pointer w-full rounded-lg hover:bg-[#5C5D62] transition-all duration-300 text-left"
     >
-      <div className="flex items-center gap-2 pl-1">
-        <SandboxStatusIndicator sandboxStatus={conversation.sandbox_status} />
-        <span className="text-xs text-white leading-6 font-normal">
-          {conversation.title}
-        </span>
+      <div className="flex items-center justify-between gap-2 pl-1">
+        <div className="flex items-center gap-2">
+          <SandboxStatusIndicator sandboxStatus={conversation.sandbox_status} />
+          {conversation.pinned && (
+            <svg
+              width={12}
+              height={12}
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="text-yellow-400"
+            >
+              <path d="M12 2v6m0 0l3-3m-3 3L9 5M12 22v-6m0 0l3 3m-3-3L9 19" />
+            </svg>
+          )}
+          <span className="text-xs text-white leading-6 font-normal">
+            {conversation.title}
+          </span>
+        </div>
+        <ConversationActionMenu conversation={conversation} />
       </div>
       <div className="flex items-center justify-between text-xs text-[#A3A3A3] leading-4 font-normal">
         <div className="flex items-center gap-3">
