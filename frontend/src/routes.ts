@@ -37,6 +37,7 @@ export default [
       route("org-members", "routes/manage-organization-members.tsx"),
       route("org", "routes/manage-org.tsx"),
     ]),
+    route("conversations", "routes/conversations.tsx"),
     route("conversations/:conversationId", "routes/conversation.tsx"),
     route("oauth/device/verify", "routes/device-verify.tsx"),
   ]),

@@ -18818,6 +18818,23 @@
     "uk": "Нова розмова",
     "ca": "Nova conversa"
   },
+  "COMMON$CONVERSATIONS": {
+    "en": "Conversations",
+    "ja": "会話",
+    "zh-CN": "对话",
+    "zh-TW": "對話",
+    "ko-KR": "대화",
+    "no": "Samtaler",
+    "it": "Conversazioni",
+    "pt": "Conversas",
+    "es": "Conversaciones",
+    "ar": "المحادثات",
+    "fr": "Conversations",
+    "tr": "Konuşmalar",
+    "de": "Gespräche",
+    "uk": "Розмови",
+    "ca": "Converses"
+  },
   "COMMON$NO_BRANCH": {
     "en": "No Branch",
     "ja": "ブランチなし",
