@@ -6,8 +6,8 @@ import { useInfiniteScroll } from "#/hooks/use-infinite-scroll";
 import { RecentConversation } from "../components/features/home/recent-conversations/recent-conversation";
 import { RecentConversationsSkeleton } from "../components/features/home/recent-conversations/recent-conversations-skeleton";
 import { useNavigate } from "react-router";
-import RefreshIcon from "#/icons/u-refresh.svg?react";
-import SearchIcon from "#/icons/search.svg?react";
+import { BrandButton } from "#/components/features/settings/brand-button";
+import { RefreshCw, Search } from "lucide-react";
 
 type SortOption = "recent" | "oldest" | "a-z" | "pinned";
 
@@ -111,10 +111,9 @@ function ConversationsScreen() {
       <div className="flex justify-center pb-6 gap-3 flex-wrap">
         {/* Search Input */}
         <div className="relative">
-          <SearchIcon
+          <Search
             className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-tertiary-alt"
-            width={16}
-            height={16}
+            size={16}
           />
           <input
             type="text"
@@ -144,21 +143,20 @@ function ConversationsScreen() {
           className="p-2 bg-tertiary text-white rounded-lg border border-[#3D4148] hover:bg-tertiary-alt focus:outline-none disabled:opacity-50 transition-colors"
           title={t(I18nKey.BUTTON$REFRESH)}
         >
-          <RefreshIcon
+          <RefreshCw
             className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`}
-            width={16}
-            height={16}
+            size={16}
           />
         </button>
 
         {/* New Conversation Button */}
-        <button
+        <BrandButton
           type="button"
+          variant="primary"
           onClick={handleStartNewConversation}
-          className="px-4 py-2 bg-[#10A32F] hover:bg-[#0D8B1F] text-white text-sm font-medium rounded-lg cursor-pointer transition-colors"
         >
           {t(I18nKey.COMMON$NEW_CONVERSATION)}
-        </button>
+        </BrandButton>
       </div>
 
       {error && (
