@@ -4,7 +4,7 @@ import EllipsisIcon from "#/icons/ellipsis.svg?react";
 import { ContextMenu } from "#/ui/context-menu";
 import { ContextMenuListItem } from "../../context-menu/context-menu-list-item";
 import { I18nKey } from "#/i18n/declaration";
-import { ConversationNameContextMenuIconText } from "../conversation/conversation-name-context-menu-icon-text";
+import { ConversationNameContextMenuIconText } from "../../../conversation/conversation-name-context-menu-icon-text";
 import { useToggleConversationPin } from "#/hooks/mutation/use-toggle-conversation-pin";
 import { V1AppConversation } from "#/api/conversation-service/v1-conversation-service.types";
 
