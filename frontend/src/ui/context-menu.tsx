@@ -54,6 +54,7 @@ interface ContextMenuProps {
   position?: VariantProps<typeof contextMenuVariants>["position"];
   spacing?: VariantProps<typeof contextMenuVariants>["spacing"];
   alignment?: VariantProps<typeof contextMenuVariants>["alignment"];
+  onClose?: () => void;
 }
 
 export function ContextMenu({
@@ -67,6 +68,7 @@ export function ContextMenu({
   position,
   spacing,
   alignment,
+  onClose,
 }: ContextMenuProps) {
   return (
     <ul
